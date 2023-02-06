@@ -3261,6 +3261,8 @@ function withinMaxClamp(min, value, max) {
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+var _require = __webpack_require__(/*! axios */ "./node_modules/axios/dist/browser/axios.cjs"),
+  axios = _require["default"];
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.runtime.common.js");
 
@@ -3286,6 +3288,24 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.runtime
 // const app = new Vue({
 //     el: "#app",
 // });
+
+var inputTitle = document.querySelector("[data-sluger=title]");
+var inputSlug = document.querySelector("[data-sluger=slug]");
+var btnGetSlug = document.querySelector("[data-sluger=button]");
+if (inputTitle && inputSlug && btnGetSlug) {
+  var getSlug = function getSlug(tilte) {
+    var slug;
+    axios.get(btnGetSlug.dataset.sluger_url + "?title=" + inputTitle.value).then(function (response) {
+      return inputSlug.value = response.data.slug;
+    });
+  };
+  inputTitle.addEventListener("focusout", function () {
+    if (inputSlug.value === "") {
+      getSlug();
+    }
+  });
+  btnGetSlug.addEventListener("click", getSlug);
+}
 
 /***/ }),
 
